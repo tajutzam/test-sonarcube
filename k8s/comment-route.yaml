@@ -1,0 +1,106 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: bookcomment
+  namespace: bookreview
+spec:
+  host: bookcomment-bookreview.apps-crc.testing
+  path: /
+  to:
+    kind: Service
+    name: comment-svc
+    weight: 100
+  port:
+    targetPort: 8081
+  tls:
+    termination: edge
+    certificate: |
+      -----BEGIN CERTIFICATE-----
+      MIIEkjCCAvqgAwIBAgIRAP7DAbSRM4fO+ez+3822nTgwDQYJKoZIhvcNAQELBQAw
+      gaMxHjAcBgNVBAoTFW1rY2VydCBkZXZlbG9wbWVudCBDQTE8MDoGA1UECwwzcmFj
+      aG1hdGFkaGllQENyYWNrZXJzLU1hY0Jvb2subG9jYWwgKFJhY2htYXQgQWRoaWUp
+      MUMwQQYDVQQDDDpta2NlcnQgcmFjaG1hdGFkaGllQENyYWNrZXJzLU1hY0Jvb2su
+      bG9jYWwgKFJhY2htYXQgQWRoaWUpMB4XDTI1MDIxNTE2MTM0OFoXDTI3MDUxNTE2
+      MTM0OFowZzEnMCUGA1UEChMebWtjZXJ0IGRldmVsb3BtZW50IGNlcnRpZmljYXRl
+      MTwwOgYDVQQLDDNyYWNobWF0YWRoaWVAQ3JhY2tlcnMtTWFjQm9vay5sb2NhbCAo
+      UmFjaG1hdCBBZGhpZSkwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDN
+      pj0Xgj54hILXCmHpOPP/2dhTIvnLocq0yUdWSFsniIqOWuOQ4c1LuEG3epeq+JaP
+      P+ErAKv/ai8j9cOxUkaHvRGbfHvf8sDVpvwa5PC0IaTsaPFN52h4dzSPqAX6bskk
+      qa5h+D7lS1kOO0ExGw1SIWraCT77PPevstscDVqpqYAPS+jGr8XATkchzlu0PMh+
+      2T7mKFuhcjCUuBEoVJkwjcsT3zybEQhfvT1NhO8pM5u3D95cHs1l/YNrDq6LKrzA
+      4MmClU1SA5QIUzeRQqyz+q86ABh2ctQWbPvg8TYMLw0szi2QAiafp3L7LNAQeZqD
+      pbgfG1GdZtvbKoaA0KY3AgMBAAGjfDB6MA4GA1UdDwEB/wQEAwIFoDATBgNVHSUE
+      DDAKBggrBgEFBQcDATAfBgNVHSMEGDAWgBSqeDRPoGDtjpXalSSQHhxqrqlANTAy
+      BgNVHREEKzApgidib29rY29tbWVudC1ib29rcmV2aWV3LmFwcHMtY3JjLnRlc3Rp
+      bmcwDQYJKoZIhvcNAQELBQADggGBAGeNIIZq9KKqZOF9RxKHaLeDpg6uteNd85J3
+      x+mrNoi2WzuW5jzWPwUdU5xlV/QeLWce0+W3Em/9byIYH85IHp17ZdCB91/GNmFJ
+      bCKOYur5d6TBwkqTFX1D9qIPAZxQ05kHm0FClszKIJaNuMht0Qk0quyLCMzQbPer
+      LTj4hVDXpZi7J0S3PiHyLeO7sbzZuD2jtuBrJv9fyiA57p5OzPkTBpGWoPENBmhv
+      mtUsuWiuLRq5r9ENCZOjJR/lrBFBjxmi4kxB4yyPhK+1ZYaLDc7sceT2mSwuDlRA
+      SXYw8pXzUo8S5eDk1iITmlUMaDZrdrsaHFNf42p7ThUsoikfsGh9AVHto5Qagzwi
+      CShAC4bMBOfoqq/2ksPT1Wcz85HLEo/phXYZfsMq5MXMdfj2m+mPXmvZ+7B6z/v2
+      fF0fFfCTKCPtTL0B1veEkX+KXtTzYLSlm5ArtWSuic/di5myA2465p5274SrqP3n
+      FH5NsLhX2KLHtD1D2mEM4ryMTw5ELQ==
+      -----END CERTIFICATE-----
+    key: |
+      -----BEGIN PRIVATE KEY-----
+      MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDNpj0Xgj54hILX
+      CmHpOPP/2dhTIvnLocq0yUdWSFsniIqOWuOQ4c1LuEG3epeq+JaPP+ErAKv/ai8j
+      9cOxUkaHvRGbfHvf8sDVpvwa5PC0IaTsaPFN52h4dzSPqAX6bskkqa5h+D7lS1kO
+      O0ExGw1SIWraCT77PPevstscDVqpqYAPS+jGr8XATkchzlu0PMh+2T7mKFuhcjCU
+      uBEoVJkwjcsT3zybEQhfvT1NhO8pM5u3D95cHs1l/YNrDq6LKrzA4MmClU1SA5QI
+      UzeRQqyz+q86ABh2ctQWbPvg8TYMLw0szi2QAiafp3L7LNAQeZqDpbgfG1GdZtvb
+      KoaA0KY3AgMBAAECggEAQ6mtsh11Znva/Nv6qRzHE2hex8PbQofCRUdwhFAcRd6k
+      EACRnWrd/ErsvGzGmEdgalOPR3HaJZiPWBqVv7MdZ63qrCkCLQYXMnTVwBeRpwLm
+      264Prx0zf2dhUN7s0KBA6CI4MR3Xu+PVslwGsByBfoNmP8UJBurhZ9rGQu2V5fo7
+      Gp84Ek9NCpRagC+oVvtbwoRF7sh6GpWuJctBG1Fn22YdeMURETfThOknx6T3X9nH
+      peZlBOF4S9gqUxubu1ZR7p/5RM6F72KVUdrYBSsVE3e9Sh3gHn8D/aHg4KUMv6ZZ
+      4LhjrqA6LmdCKHYUPTRyqRmeVHRKjJyxBh4csG/KqQKBgQDope765FhWUuShF5FG
+      UjT08LM3sajq8TV+uQHoQ0eDPA7xv7JQiPpmf2jS96UzCzf2faFVPIIkc/SxzIff
+      FbLDPrwXz7xKRQL2D5FuTD/1g5H2qzKDU8AMjdk8OMG0WRdboWcG5xkwXRTjYnzf
+      CWz3WST1se8SKHIDChpzGuxOAwKBgQDiSo0D5plnpAIZMZ3lHWm0KqvMcu3FEDbk
+      drjR/tHOS/5t09e0nL61w+xoJDcycAGQTzFoHZN09xw6VCXsYVIolQ6Nw50boJdf
+      pj5KlNByIkiJzo4EHMK62KgXbwih5oiXfwFUkcKkDK3ueG1/Fja/5u9eF/6QS7Wn
+      1ZKWyvpavQKBgQDltmHfbPQkWDjTLvgMnUMYz0nGJi+Ju518gKR3d2b3F6gR35vr
+      lTTZW9he5pNBcURSp/1Ssio2YCAuJqvKBBy8WAdU45MhKj8gQoLwi21juAO5sZRw
+      w5MPUkg7BDePIaDEovudfzYJ4P6s/iQZ/a6QFH8/8e8C2NiqU6GGIgFNjQKBgQDT
+      4P/mPh026F66njV8GC0n76hKVvYARO1Qv0TQAusJYShKR0c6KmV6pYcN/5LbG/qq
+      1yuok8DEjLeWecHEcV9O9jnZTOYmvxfdDDhY9ruxkh4fQhLBEPjXoBLLVkBb7xHH
+      37gsKgp4NhMJLSNBEliTGDTaAldtXiYpjpShsk31dQKBgQCZ4SO1aDpLznDqB3eM
+      560GgEQ3IMfhCMovJiY/yhDDEs35haFrGItZxI+e2cY4Ks9JyAk7AfbYVKHF7zQX
+      z4Og6Q9kf7UzxXZjStBGQPVfAb6VDcTZAxLPfiMMEVuUU8ldDMg6InVA28SCavtF
+      ioGxtnoJFL5OuWrjpif94lLPXw==
+      -----END PRIVATE KEY-----
+    caCertificate: |
+      -----BEGIN CERTIFICATE-----
+      MIIFFzCCA3+gAwIBAgIQAwcshWQKnVyhlqdfcexqLzANBgkqhkiG9w0BAQsFADCB
+      ozEeMBwGA1UEChMVbWtjZXJ0IGRldmVsb3BtZW50IENBMTwwOgYDVQQLDDNyYWNo
+      bWF0YWRoaWVAQ3JhY2tlcnMtTWFjQm9vay5sb2NhbCAoUmFjaG1hdCBBZGhpZSkx
+      QzBBBgNVBAMMOm1rY2VydCByYWNobWF0YWRoaWVAQ3JhY2tlcnMtTWFjQm9vay5s
+      b2NhbCAoUmFjaG1hdCBBZGhpZSkwHhcNMjQwODA3MTY0MTMzWhcNMzQwODA3MTY0
+      MTMzWjCBozEeMBwGA1UEChMVbWtjZXJ0IGRldmVsb3BtZW50IENBMTwwOgYDVQQL
+      DDNyYWNobWF0YWRoaWVAQ3JhY2tlcnMtTWFjQm9vay5sb2NhbCAoUmFjaG1hdCBB
+      ZGhpZSkxQzBBBgNVBAMMOm1rY2VydCByYWNobWF0YWRoaWVAQ3JhY2tlcnMtTWFj
+      Qm9vay5sb2NhbCAoUmFjaG1hdCBBZGhpZSkwggGiMA0GCSqGSIb3DQEBAQUAA4IB
+      jwAwggGKAoIBgQCjqYuG8bGjMtJoKmgjmITXWDhfAlIwNdu6MdmqtPzIC5rpvfjq
+      ux+ag6gi7NlF8xKhQ3IiNmlkZ9/T3dKOG9Y88CapGfvgv+FqOiwNby1zLTMcz5GP
+      /2rqsRAZzWreZ8Bg+T3g32SLHCA/cymWz/o/FDPk+9ANwClGs0vjwpW8OQD79/qW
+      4SxDZuxXsX+kWMVxUMm+zQ7voyZlCpP/gKZT1iDhOVRv4JRPfAVZpAqfinyW6blO
+      UvTPZg17+pNLlCjMJfqTP6dhj8bqFkQtOsz8Cf/wND3W0/XNZPm3eznpccJ0kCg6
+      dKMoDpTrDqNhHIofJHj+r5Lmkj6cTqJRxrcjUKrAah3xhh5eEcU4nx7ebvbqQ1Ba
+      FPmVofmPLewhwvCegI7+uXGdPEmZww5uTcVDhzJ9a5bgeFhbfK54iN1KHQ6lxpil
+      lbQK6B79/k3XssqjPijM/9U5M7zhN5/zj8H5MClHMxswXdXq6Dz9jMaR6cDkSF/M
+      b5E4KJSdMbgFPXsCAwEAAaNFMEMwDgYDVR0PAQH/BAQDAgIEMBIGA1UdEwEB/wQI
+      MAYBAf8CAQAwHQYDVR0OBBYEFKp4NE+gYO2OldqVJJAeHGquqUA1MA0GCSqGSIb3
+      DQEBCwUAA4IBgQA2jxIVc1jklJBNQ157dV2AJUOC1x3VLyfBvYJYQfX1gps26bAB
+      RNDWMtmYrFxDKpF5JsSum84OJGU8zwfOc6Q3UJr2z72Wc3wP6268MrxskAuBLnga
+      F6AQsopsJe85gdBjkFktwl7tIvytTBlB7rJtRKtamKf9qLp5Q5WCveGbZEXLnO8w
+      BcpM9W+AYjj+grbfiI8THNa9nIMwAzs2jCgZo8N5dOUVBTiY7fj+ZHfx7K+oFeBf
+      T49G6LMR9kglODf+179aDETIo8hWh9w49OsxNBsUTzAk7QbYjpj6JGMMHYklSFm9
+      yg08ssYTtgH3+J9QQIXDYvz3JYnpjHiPkHL4wLfxfR0L0PEN2euBbcsjNqoGlZcU
+      hD/mQ+8yLARUSWyFtuecWA7ZUy9Zjs5jWC47lLSoiHjz+cWtGePoLim0iaYfd0S/
+      DRDkW47e19mgUGoZD1mHSRytEUr3gmBx2VpRBg+K/0w9MS+zT1abLGkrTJnI+Qfw
+      OJkSXv3EEjqUPgk=
+      -----END CERTIFICATE-----
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None

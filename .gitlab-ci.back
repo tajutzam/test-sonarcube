@@ -1,0 +1,100 @@
+variables:
+  IMAGE_NAME: $CI_REGISTRY_IMAGE
+stages:
+  - build_image
+  - deploy_dev
+  - deploy_prod
+build_image:
+  stage: build_image
+  rules:
+    - when: always
+  tags:
+    - ocp
+  before_script:
+    - echo $USER
+    - export PACKAGE_JSON_VERSION=$(cat ./package.json | jq -r .version)
+    - export VERSION=$PACKAGE_JSON_VERSION.$CI_PIPELINE_IID
+    - echo $VERSION > version-file.txt
+  script:
+    - docker build -t $IMAGE_NAME:$VERSION .
+  artifacts:
+    paths:
+      - version-file.txt
+push_image:
+  stage: build_image
+  rules:
+    - when: always
+  dependencies:
+    - build_image
+  needs:
+    - build_image
+  tags:
+    - ocp
+  before_script:
+    - export VERSION=$(cat version-file.txt)
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker push $IMAGE_NAME:$VERSION
+  artifacts:
+    paths:
+      - version-file.txt
+devdeploy:
+  stage: deploy_dev
+  rules:
+    - if: '$CI_COMMIT_BRANCH =~ /^dev-*/'
+      when: always
+    - if: '$CI_COMMIT_BRANCH !~ /^dev-*/'
+      when: never
+  dependencies:
+    - push_image
+  tags:
+    - ocp
+  before_script:
+    - export APP_PORT=8081
+    - export DB_HOST=comment-db-svc.bookreview
+    - export DB_PORT=5432
+    - export DB_INSTANCE=bookcomments
+    - export DB_UNAME=me
+    - export DB_PASS=password
+    - export VERSION=$(cat version-file.txt)
+    - oc login $OCURL --insecure-skip-tls-verify=true -u $OCUSER -p $OCPASS
+  script:
+    - envsubst < k8s-dev/vaultsecret.yaml | oc apply -f -
+    - envsubst < k8s-dev/gitlabregcred.yaml | oc apply -f -
+    - envsubst < k8s-dev/comment-deployment.yaml | oc apply -f -
+    - envsubst < k8s-dev/comment-svc.yaml | oc apply -f -
+    - envsubst < k8s-dev/comment-route.yaml | oc apply -f -
+  artifacts:
+    paths:
+      - version-file.txt
+proddeploy:
+  stage: deploy_prod
+  rules:
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: always
+    - if: $CI_COMMIT_BRANCH != "main"
+      when: never
+  dependencies:
+    - push_image
+  tags:
+    - ocp
+  before_script:
+    - export APP_PORT=8081
+    - export DB_HOST=comment-db-svc
+    - export DB_PORT=5432
+    - export DB_INSTANCE=bookcomments
+    - export DB_UNAME=me
+    - export DB_PASS=password
+    - export VERSION=$(cat version-file.txt)
+    - oc login $OCURL --insecure-skip-tls-verify=true -u $OCUSER -p $OCPASS
+  script:
+    - envsubst < k8s/comment-secret.yaml | oc apply -f -
+    - envsubst < k8s/vaultsecret.yaml | oc apply -f -
+    - envsubst < k8s/gitlabregcred.yaml | oc apply -f -
+    - envsubst < k8s/comment-dc.yaml | oc apply -f -
+    - envsubst < k8s/comment-deployment.yaml | oc apply -f -
+    - envsubst < k8s/comment-svc.yaml | oc apply -f -
+    - envsubst < k8s/comment-route.yaml | oc apply -f -
+  artifacts:
+    paths:
+      - version-file.txt

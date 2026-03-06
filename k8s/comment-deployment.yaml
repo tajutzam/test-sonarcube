@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: comment
+  namespace: bookreview
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: comment
+  template:
+    metadata:
+      labels:
+        app: comment
+    spec:
+      imagePullSecrets:
+      - name: gitlabregcred
+      containers:
+        - name: comment
+          image: ${IMAGE_NAME}:${VERSION}
+          imagePullPolicy: "IfNotPresent"
+          ports:
+            - containerPort: ${APP_PORT}
+          envFrom:
+          - secretRef:
+              name: comment-secret
